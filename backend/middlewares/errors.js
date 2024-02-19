@@ -3,9 +3,7 @@ const errorHandler = async (err, req, res, next) => {
     res.status(statusCode);
     res.json({
         message: err.message,
-        stack: process.env.NODE_ENV === 'development'
-        ? stack:
-        null
+        stack: process.env.NODE_ENV === 'development' ? err.stack : null
 
     })
 }
