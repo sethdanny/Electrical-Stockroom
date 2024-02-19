@@ -1,15 +1,15 @@
-const config = {
+import 'dotenv/config';
+
+export const dbConfig = {
     HOST: process.env.HOST,
     USER: process.env.USER,
     PASSWORD: process.env.PASSWORD,
     DB: process.env.DATABASE,
     dialect: "mysql",
     pool : {
-        max: process.env.MAX,
-        min: process.env.MIN,
-        acquire: process.env.ACQUIRE,
-        idle: process.env.IDLE
+        max:5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
     }
 }
-
-export default config;
