@@ -1,5 +1,7 @@
-import { Sequelize } from "sequelize";
+import { DataTypes, Sequelize } from "sequelize";
 import { dbConfig } from '../config/database.js';
+import { userModel } from "./user.js";
+
 const sequelize = new Sequelize(
     dbConfig.DB,
     dbConfig.USER,
@@ -22,7 +24,22 @@ export async function testConnection() {
         console.log('connected to the mysql database;')
     } catch (error) {
         console.error(error);
-        } finally {
-            await sequelize.close();
-        }
+        } 
 }
+
+const db = {};
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+db.users = userModel(sequelize, DataTypes);
+
+db.sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log("Table sync successfully");
+  })
+  .catch((err) => {
+    console.log("Error occured while syncing the table", err);
+  });
+
+export default db;
