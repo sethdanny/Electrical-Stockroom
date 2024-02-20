@@ -35,6 +35,6 @@ export const register  = asyncHandler(
         })
     } else {
         res.status(400);
-        throw new Error('Invalid User data')
+        throw new Error('Invalid User data');
     }
     });
