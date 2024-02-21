@@ -39,6 +39,19 @@ export const register  = asyncHandler(
 		}
 	});
 
+
+export const login = asyncHandler(
+	((req, res) => {
+		res.status(200).json({ message: 'Login successful', user: req.user });
+	})
+)
+
+export const logout = asyncHandler(
+	((req, res) => {
+		req.logout(() => res.status(200).json({ message: 'Logout successful' }));
+	})
+)
+
 export const getUsers = asyncHandler(
 	async (req, res) => {
 		res.status(200).json({message: 'all users'});
