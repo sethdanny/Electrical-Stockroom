@@ -52,6 +52,30 @@ export const logout = asyncHandler(
 	})
 )
 
+export const getUser = asyncHandler(
+	async (req, res) => {
+		const userId = req.params.id;
+		const user = await UserModel.findByPk(userId);
+		if (!user) {
+			res.status(400);
+			throw new Error('User not found');
+		}
+
+		if (user) {
+			const userData = {
+				id: user.userId,
+				firstName: user.firstName,
+				lastName: user.lastName,
+				email: user.email,
+				
+			}
+			res.status(200).json(userData);
+		} else {
+			throw new Error('Internal Server Error');
+		}
+	}
+);
+
 export const getUsers = asyncHandler(
 	async (req, res) => {
 		res.status(200).json({message: 'all users'});
