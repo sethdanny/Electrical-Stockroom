@@ -29,7 +29,7 @@ export const userModel = (sequelize, DataTypes) => {
 		},
 		password: {
 			type: DataTypes.STRING,
-			unique: true,   
+			allowNull: false   
 		}
 	});
 
@@ -37,6 +37,10 @@ export const userModel = (sequelize, DataTypes) => {
 		const hashedPassword = await bcrypt.hash(user.password, 10);
 		user.password = hashedPassword;
 	});
+
+	User.prototype.validPassword = function (password) {
+		return bcrypt.compareSync(password, this.password);
+	};
 
 	return User;
 };
