@@ -2,7 +2,7 @@ import passport from 'passport';
 import { Strategy } from 'passport-local';
 import db from '../models/index.js';
 
-const User = db.users;
+const User = db.User;
 
 export default passport.use(
 	new Strategy({usernameField: 'email'}, async (email, password, done) => {

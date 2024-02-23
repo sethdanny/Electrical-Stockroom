@@ -1,6 +1,7 @@
 import { DataTypes, Sequelize } from 'sequelize';
 import { dbConfig } from '../config/database.js';
-import { userModel } from './user.js';
+import userModel from './user.js';
+import  productModel from './product.js';
 
 const sequelize = new Sequelize(
 	dbConfig.DB,
@@ -18,6 +19,9 @@ const sequelize = new Sequelize(
 	}
 );
 
+const User = userModel(sequelize);
+const Product = productModel(sequelize, User);
+
 export async function testConnection() {
 	try {
 		await sequelize.authenticate();
@@ -31,15 +35,14 @@ const db = {};
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.users = userModel(sequelize, DataTypes);
+db.User = User;
+db.Product = Product;
 
-db.sequelize
-	.sync({ alter: true })
-	.then(() => {
-		console.log('Table sync successfully');
-	})
-	.catch((err) => {
-		console.log('Error occured while syncing the table', err);
-	});
+try {
+	await db.sequelize.sync({ alter: true });
+	console.log('Tables synchronized successfully');
+} catch (error) {
+	console.log('Error occurred while syncing the tables', error);
+}
 
 export default db;

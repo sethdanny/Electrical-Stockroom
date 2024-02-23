@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import db from '../models/index.js';
 
-const UserModel = db.users;
+const User = db.User;
 
 export const register  = asyncHandler(
 	async (req, res) => {
@@ -15,13 +15,13 @@ export const register  = asyncHandler(
 			throw new Error('password must be up to 6 characters');
 		}
 
-		const userExists = await UserModel.findOne({where: {email}});
+		const userExists = await User.findOne({where: {email}});
 		if (userExists) {
 			res.status(400);
 			throw new Error('User with email already exists');
 		}
 
-		const newUser = await UserModel.create({
+		const newUser = await User.create({
 			firstName,
 			lastName,
 			email,
@@ -55,7 +55,7 @@ export const logout = asyncHandler(
 export const getUser = asyncHandler(
 	async (req, res) => {
 		const userId = req.params.id;
-		const user = await UserModel.findByPk(userId);
+		const user = await User.findByPk(userId);
 		if (!user) {
 			res.status(400);
 			throw new Error('User not found');

@@ -8,6 +8,7 @@ import userRoutes from '../backend/routes/userRoute.js';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
+import productRoutes from './routes/productRoutes.js';
 
 const app = express();
 const PORT = process.env.port || 4001;
@@ -35,6 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
 
 app.use(errorHandler);
 
