@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { dbConfig } from '../config/database.js';
 import userModel from './user.js';
 import  productModel from './product.js';
@@ -25,7 +25,7 @@ const Product = productModel(sequelize, User);
 export async function testConnection() {
 	try {
 		await sequelize.authenticate();
-		console.log('connected to the mysql database;');
+		console.log('connected to the mysql database');
 	} catch (error) {
 		console.error(error);
 	} 

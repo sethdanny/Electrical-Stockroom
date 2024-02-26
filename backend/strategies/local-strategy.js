@@ -12,6 +12,9 @@ export default passport.use(
 			if(!findUser.validPassword(password)) {
 				throw new Error('Invalid password');
 			}
+			if (!findUser.isVerified) {
+				return done(null, false, { message: 'Email not verified. Check your email for verification instructions.' });
+			  }
 			done(null, findUser);
 		} catch (error) {
 			done(error, null);

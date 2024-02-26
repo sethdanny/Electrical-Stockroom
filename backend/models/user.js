@@ -31,12 +31,20 @@ const userModel = (sequelize) => {
 		password: {
 			type: DataTypes.STRING,
 			allowNull: false   
+		},
+		isVerified: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
+		verificationToken: {
+			type: DataTypes.STRING
 		}
 	});
 
 	User.beforeCreate(async (user) => {
 		const hashedPassword = await bcrypt.hash(user.password, 10);
 		user.password = hashedPassword;
+		user.isVerified = false;
 	});
 
 	User.prototype.validPassword = function (password) {
