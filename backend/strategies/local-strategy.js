@@ -14,7 +14,7 @@ export default passport.use(
 			}
 			if (!findUser.isVerified) {
 				return done(null, false, { message: 'Email not verified. Check your email for verification instructions.' });
-			  }
+			}
 			done(null, findUser);
 		} catch (error) {
 			done(error, null);

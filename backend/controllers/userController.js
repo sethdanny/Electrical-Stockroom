@@ -41,7 +41,7 @@ export const register  = asyncHandler(
       		to: email,
       		subject: 'Verify Your Email',
       		text: `Click the following link to verify your email: ${verificationLink}`
-		})
+		});
 		if (newUser) {
 			res.status(201).json({
 				success: true,
@@ -71,10 +71,10 @@ export const verifyUser = asyncHandler(
 			await new Promise(resolve => setTimeout(resolve, 1000)); 
 			const verifiedUser = await User.findOne({ where: { id: user.id } });
 			if (verifiedUser.isVerified) {
-			res.json({ 
-				verifiedUser,
-				message: 'Email verification successful. You can now log in.' });
-		}
+				res.json({ 
+					verifiedUser,
+					message: 'Email verification successful. You can now log in.' });
+			}
 	 } else {
 			res.status(500);
 			throw new Error('Internal Server Error');
