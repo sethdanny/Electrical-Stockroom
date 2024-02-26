@@ -38,7 +38,7 @@ export const register  = asyncHandler(
 		const verificationLink = `http://localhost:${PORT}/api/users/verify/${verificationToken}`;
 		await transporter.sendMail({
 			from: process.env.MY_EMAIL,
-      		to: email,
+			to: email,
       		subject: 'Verify Your Email',
       		text: `Click the following link to verify your email: ${verificationLink}`
 		});
@@ -54,33 +54,28 @@ export const register  = asyncHandler(
 		}
 	});
 
-export const verifyUser = asyncHandler(
-	async (req, res) => {
-		const {token} = req.params;
-
-		const user = await User.findOne({verificationToken : token});
-
-		if (!user) {
-			res.status(404);
-			throw new Error('Invalid verification token');
-		}
-		if (user) {
+	export const verifyUser = asyncHandler(
+		async (req, res) => {
+		  const { token } = req.params;
+	  
+		  try {
+			const user = await User.findOne({ verificationToken: token });
+	  
+			if (!user) {
+			  return res.status(404).json({ message: 'Invalid verification token' });
+			}
+	  
 			user.isVerified = true;
 			user.verificationToken = undefined;
 			await user.save();
-			await new Promise(resolve => setTimeout(resolve, 1000)); 
-			const verifiedUser = await User.findOne({ where: { id: user.id } });
-			if (verifiedUser.isVerified) {
-				res.json({ 
-					verifiedUser,
-					message: 'Email verification successful. You can now log in.' });
-			}
-	 } else {
-			res.status(500);
-			throw new Error('Internal Server Error');
-		}	
-	}
-);
+	  
+			res.json({ user, message: 'Email verification successful. You can now log in.' });
+		  } catch (error) {
+			console.error(error);
+			res.status(500).json({ message: 'Internal server error' });
+		  }
+		}
+	  );
 
 export const login = asyncHandler(
 	((req, res) => {
